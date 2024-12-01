@@ -1,0 +1,8 @@
+{
+  "stackblitz": {
+    "repository": "anmlclt/colorsnatch",
+    "branch": "main",
+    "openFile": "src/App.tsx",
+    "template": "vite-react-ts"
+  }
+}
