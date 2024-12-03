@@ -34,8 +34,10 @@ export const GameContainer: React.FC<GameContainerProps> = ({
           wrongSquareIndex={wrongSquareIndex}
         />
       </div>
-      <div className="mt-16 md:mt-20 h-[50px] flex items-center justify-center">
-        {/* Ad space placeholder */}
+      <div className="mt-16 md:mt-20 h-[100px] w-full max-w-[728px] mx-auto flex items-center justify-center">
+        <div id="game-ad-container" className="w-full h-full">
+          {/* Ad container - will be populated by ad script */}
+        </div>
       </div>
     </div>
   </div>
