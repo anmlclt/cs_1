@@ -4,6 +4,7 @@ import { GameContainer } from './components/GameContainer';
 import { GameOverModal } from './components/GameOverModal';
 import { GameOverEffect } from './components/GameOverEffect';
 import { Leaderboard } from './components/Leaderboard';
+import { WelcomeModal } from './components/WelcomeModal';
 import { generateShades, calculateGridSize } from './utils/colorUtils';
 import { calculateHintArea } from './utils/hintUtils';
 import { GameState, GameScore, HintState } from './types/game';
@@ -14,6 +15,7 @@ const HINT_LEVEL_INTERVAL = 10;
 const HINT_DURATION = 1500; // 1.5 seconds
 
 function App() {
+  const [showWelcome, setShowWelcome] = useState(true);
   const [level, setLevel] = useState(1);
   const [score, setScore] = useState(0);
   const [time, setTime] = useState(0);
@@ -68,7 +70,6 @@ function App() {
     }
   }, [wrongSquareIndex]);
 
-  // Add effect to automatically clear hint after duration
   useEffect(() => {
     if (hint.isActive) {
       const timer = setTimeout(() => {
@@ -82,22 +83,7 @@ function App() {
     }
   }, [hint.isActive]);
 
-  const handleGameOver = useCallback(() => {
-    setIsGameActive(false);
-    setShowGameOver(true);
-    setShowGameOverEffect(true);
-  }, []);
-
-  const handleSaveScore = useCallback((name: string) => {
-    saveScore({
-      name,
-      score,
-      level,
-      time,
-    });
-  }, [score, level, time, saveScore]);
-
-  const handleRestart = useCallback(() => {
+  const initializeGame = useCallback(() => {
     setLevel(1);
     setScore(0);
     setTime(0);
@@ -119,6 +105,25 @@ function App() {
       differentSquareIndex: Math.floor(Math.random() * (gridSize * gridSize))
     });
   }, []);
+
+  const handleGameOver = useCallback(() => {
+    setIsGameActive(false);
+    setShowGameOver(true);
+    setShowGameOverEffect(true);
+  }, []);
+
+  const handleSaveScore = useCallback((name: string) => {
+    saveScore({
+      name,
+      score,
+      level,
+      time,
+    });
+  }, [score, level, time, saveScore]);
+
+  const handleRestart = useCallback(() => {
+    initializeGame();
+  }, [initializeGame]);
 
   const handleHint = useCallback(() => {
     if (level >= hint.availableAt) {
@@ -169,12 +174,18 @@ function App() {
   }, [level, score, gameState, lives, handleGameOver, isGameActive]);
 
   const handleCloseGameOver = useCallback(() => {
-    setShowGameOver(false);
-    setIsGameActive(false);
-  }, []);
+    initializeGame();
+  }, [initializeGame]);
+
+  const handleStartGame = useCallback(() => {
+    setShowWelcome(false);
+    initializeGame();
+  }, [initializeGame]);
 
   return (
     <div className="min-h-screen w-full bg-gray-900 relative overflow-hidden">
+      <WelcomeModal show={showWelcome} onStart={handleStartGame} />
+      
       <GameHeader
         isGameActive={isGameActive}
         showGameOver={showGameOver}
