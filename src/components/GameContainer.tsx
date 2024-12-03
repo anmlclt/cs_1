@@ -1,6 +1,5 @@
 import React from 'react';
 import { GameGrid } from './GameGrid';
-import { BuyMeCoffeeButton } from './BuyMeCoffeeButton';
 
 interface GameContainerProps {
   gameState: {
@@ -35,8 +34,8 @@ export const GameContainer: React.FC<GameContainerProps> = ({
           wrongSquareIndex={wrongSquareIndex}
         />
       </div>
-      <div className="mt-16 md:mt-20">
-        <BuyMeCoffeeButton />
+      <div className="mt-16 md:mt-20 h-[50px] flex items-center justify-center">
+        {/* Ad space placeholder */}
       </div>
     </div>
   </div>
